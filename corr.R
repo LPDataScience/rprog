@@ -1,0 +1,27 @@
+corr <- function(directory, threshold = 0) {
+    ## 'directory' is a character vector of length 1 indicating
+    ## the location of the CSV files
+    
+    ## 'threshold' is a numeric vector of length 1 indicating the
+    ## number of completely observed observations (on all
+    ## variables) required to compute the correlation between
+    ## nitrate and sulfate; the default is 0
+    
+    ## Return a numeric vector of correlations
+    
+    # initialize the data frame
+    data <- NULL
+    # process all files in the given directory
+    num.files <- length(list.files(directory))
+    for (id in 1:num.files) {
+        # if # complete rows is below the threshold, skip this file
+        if (complete(directory, id:id)[1,"nobs"] < threshold) next
+        # read in data from file
+        fname = sprintf("%s/%03d.csv", directory, id)
+        mondata <- read.csv (fname)        
+        # add this to the data collected so far 
+        data <- rbind(data, mondata)
+    }
+    # return the correlations
+    cor(data[,sulfate], data[,nitrate], "complete.obs")
+}
