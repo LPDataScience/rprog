@@ -9,3 +9,7 @@
 
 # RStudio files
 .Rproj.user/
+
+# Ignore the uncompressed data files
+specdata/*
+.Rproj.user
